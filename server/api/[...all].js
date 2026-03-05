@@ -1,6 +1,5 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
-const app = require("../app");
 
 let isConnected = false;
 
@@ -20,6 +19,7 @@ async function connectToDatabase() {
 module.exports = async (req, res) => {
 	try {
 		await connectToDatabase();
+		const app = require("../app");
 		return app(req, res);
 	} catch (error) {
 		console.error("Serverless startup error:", error);
