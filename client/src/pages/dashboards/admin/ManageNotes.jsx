@@ -120,15 +120,17 @@ const ManageNotes = () => {
     if (
       !formData.title ||
       !formData.subject ||
-      !formData.content ||
       !formData.category ||
       !formData.classLevel
     ) {
-      alert("All fields are required");
+      alert("Topic, Subject, Category and Class/Level are required");
       return;
     }
 
-    if (!editingNote && selectedFiles.length === 0) {
+    const hasExistingAttachments =
+      editingNote && Array.isArray(editingNote.attachments) && editingNote.attachments.length > 0;
+
+    if (selectedFiles.length === 0 && !hasExistingAttachments) {
       alert("Please upload at least one study material file (PDF/Image)");
       return;
     }
@@ -201,6 +203,26 @@ const ManageNotes = () => {
     });
     setSelectedFiles([]);
     setShowForm(true);
+  };
+
+  const handleDownloadAttachment = async (noteId, index, fileName) => {
+    try {
+      const response = await API.get(
+        `/notes/${noteId}/attachments/${index}/download`,
+        { responseType: "blob" }
+      );
+
+      const blobUrl = window.URL.createObjectURL(response.data);
+      const link = document.createElement("a");
+      link.href = blobUrl;
+      link.setAttribute("download", fileName || `attachment-${index + 1}`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(blobUrl);
+    } catch (err) {
+      alert("Failed to download file");
+    }
   };
 
   if (loading)
@@ -340,6 +362,7 @@ const ManageNotes = () => {
                 note={note}
                 onDelete={handleDelete}
                 onEdit={startEdit}
+                onDownload={handleDownloadAttachment}
               />
             ))}
           </div>
@@ -404,7 +427,7 @@ const EmptyState = () => (
   </div>
 );
 
-const NoteCard = ({ note, onDelete, onEdit }) => (
+const NoteCard = ({ note, onDelete, onEdit, onDownload }) => (
   <div className="bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-xl transition flex flex-col">
     <div className="p-4 md:p-5 border-b bg-slate-50 flex justify-between items-start md:items-center gap-2">
       <h3 className="font-semibold text-base md:text-lg flex-1 break-words">{note.title}</h3>
@@ -437,16 +460,15 @@ const NoteCard = ({ note, onDelete, onEdit }) => (
           </p>
           <div className="space-y-2">
             {note.attachments.map((file, idx) => (
-              <a
+              <button
                 key={idx}
-                href={file.url}
-                target="_blank"
-                rel="noopener noreferrer"
+                type="button"
+                onClick={() => onDownload(note._id, idx, file.originalName)}
                 className="flex items-center justify-between gap-2 text-xs bg-amber-50 hover:bg-yellow-50 border border-amber-200 p-2.5 md:p-2 rounded-md min-h-[44px]"
               >
                 <span className="truncate">{file.originalName || "Attachment"}</span>
                 <Download size={13} className="flex-shrink-0" />
-              </a>
+              </button>
             ))}
           </div>
         </div>
@@ -492,7 +514,7 @@ const CreateNoteModal = ({
           {/* TITLE */}
           <div>
             <label className="block text-sm font-semibold text-slate-700 mb-2">
-              Title *
+              Topic *
             </label>
             <input
               type="text"
@@ -501,7 +523,7 @@ const CreateNoteModal = ({
               onChange={(e) =>
                 setFormData({ ...formData, title: e.target.value })
               }
-              placeholder="Enter material title"
+              placeholder="Enter topic"
               className="w-full px-4 py-2.5 md:py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm md:text-base min-h-[44px]"
               required
             />
@@ -578,7 +600,7 @@ const CreateNoteModal = ({
           {/* CONTENT */}
           <div>
             <label className="block text-sm font-semibold text-slate-700 mb-2">
-              Content *
+              Content (Optional)
             </label>
             <textarea
               name="content"
@@ -589,14 +611,13 @@ const CreateNoteModal = ({
               placeholder="Enter note content..."
               rows="5"
               className="w-full px-4 py-2.5 md:py-2.5 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-400 focus:outline-none resize-none text-sm md:text-base"
-              required
             />
           </div>
 
           {/* FILE UPLOAD */}
           <div>
             <label className="block text-sm font-semibold text-slate-700 mb-2">
-              Study Material Files (PDF/Image)
+              Study Material Files (PDF/Image) *
             </label>
             <label className="flex items-center gap-3 px-4 py-3 md:py-3 border-2 border-dashed border-amber-300 rounded-lg cursor-pointer hover:border-amber-500 transition min-h-[56px]">
               <Upload size={20} className="text-slate-400 flex-shrink-0" />

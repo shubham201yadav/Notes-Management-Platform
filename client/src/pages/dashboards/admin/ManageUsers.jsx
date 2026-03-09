@@ -16,6 +16,8 @@ const ManageUsers = () => {
     password: "",
     role: "student",
   });
+  const [pendingRoleChange, setPendingRoleChange] = useState(null);
+  const [updatingRoleId, setUpdatingRoleId] = useState(null);
 
   const fetchUsers = async () => {
     try {
@@ -71,18 +73,34 @@ const ManageUsers = () => {
     return `${base} bg-gray-100 text-gray-700`;
   };
 
-  const handleRoleChange = async (user, newRole) => {
+  const handleRoleChange = (user, newRole) => {
+    if ((user.role || "student") === newRole) return;
+    setPendingRoleChange({ user, newRole, oldRole: user.role || "student" });
+  };
+
+  const confirmRoleChange = async () => {
+    if (!pendingRoleChange) return;
+
+    const { user, newRole } = pendingRoleChange;
     try {
+      setUpdatingRoleId(user._id || user.id);
       setUsers((prev) =>
         prev.map((u) =>
           (u._id || u.id) === (user._id || user.id) ? { ...u, role: newRole } : u
         )
       );
       await API.patch(`/users/${user._id || user.id}/role`, { role: newRole });
+      setPendingRoleChange(null);
     } catch (err) {
       alert(err.response?.data?.message || "Failed to update role");
       fetchUsers();
+    } finally {
+      setUpdatingRoleId(null);
     }
+  };
+
+  const cancelRoleChange = () => {
+    setPendingRoleChange(null);
   };
 
   const openAddModal = () => {
@@ -328,6 +346,49 @@ const ManageUsers = () => {
           </>
         )}
       </div>
+
+      {pendingRoleChange && (
+        <div className="fixed inset-0 z-50 bg-black/40 p-3 sm:p-4 flex items-end sm:items-center justify-center">
+          <div className="w-full max-w-sm bg-white rounded-2xl border border-amber-200 shadow-xl">
+            <div className="px-4 sm:px-5 py-4 border-b border-amber-100">
+              <h3 className="text-lg sm:text-xl font-semibold text-amber-900">Change Role</h3>
+              <p className="text-xs sm:text-sm text-amber-700 mt-1 font-medium">
+                Change role for <span className="font-bold">{pendingRoleChange.user.name || pendingRoleChange.user.fullName || "this user"}</span>?
+              </p>
+            </div>
+
+            <div className="p-4 sm:p-5 space-y-3">
+              <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 text-sm text-amber-900">
+                <p>
+                  <span className="font-medium">Current role:</span> <span className="capitalize font-semibold">{pendingRoleChange.oldRole}</span>
+                </p>
+                <p className="mt-1">
+                  <span className="font-medium">New role:</span> <span className="capitalize font-semibold text-amber-700">{pendingRoleChange.newRole}</span>
+                </p>
+              </div>
+
+              <div className="pt-2 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <button
+                  type="button"
+                  onClick={cancelRoleChange}
+                  disabled={updatingRoleId === (pendingRoleChange.user._id || pendingRoleChange.user.id)}
+                  className="w-full rounded-lg border border-amber-300 text-amber-800 px-4 py-2.5 min-h-[44px] hover:bg-amber-100 disabled:opacity-60 font-medium"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={confirmRoleChange}
+                  disabled={updatingRoleId === (pendingRoleChange.user._id || pendingRoleChange.user.id)}
+                  className="w-full rounded-lg bg-amber-500 hover:bg-amber-600 disabled:bg-amber-300 text-white px-4 py-2.5 min-h-[44px] font-medium"
+                >
+                  {updatingRoleId === (pendingRoleChange.user._id || pendingRoleChange.user.id) ? "Updating..." : "Confirm"}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {showAddModal && (
         <div className="fixed inset-0 z-50 bg-black/40 p-3 sm:p-4 flex items-end sm:items-center justify-center">

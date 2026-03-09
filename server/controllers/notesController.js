@@ -1,6 +1,8 @@
 const Note = require("../models/Note");
 const fs = require("fs");
 const path = require("path");
+const https = require("https");
+const http = require("http");
 const cloudinary = require("../config/cloudinary");
 
 // Ensure uploads directory exists
@@ -48,23 +50,37 @@ exports.getNotes = async (req, res) => {
       .populate("createdBy", "name email")
       .sort({ createdAt: -1 });
 
-    // sign URLs if necessary
+    // For PDF attachments, provide a signed URL so delivery works even when
+    // Cloudinary PDF delivery restrictions are enabled.
     notes = notes.map((note) => {
       const obj = note.toObject();
-      if (obj.attachments) {
+      if (Array.isArray(obj.attachments)) {
         obj.attachments = obj.attachments.map((file) => {
-          if (file.public_id) {
-            const signed = cloudinary.url(file.public_id, {
-              resource_type: file.resource_type || "auto",
-              sign_url: true,
-            });
-            return { ...file, url: signed };
+          const isPdf = file?.mimetype === "application/pdf";
+          if (isPdf && file.public_id) {
+            const ext = path.extname(file.originalName || "").replace(".", "") || "pdf";
+            try {
+              const signedPdfUrl = cloudinary.utils.private_download_url(
+                file.public_id,
+                ext,
+                {
+                  resource_type: file.resource_type || "raw",
+                  type: "upload",
+                  expires_at: Math.floor(Date.now() / 1000) + 3600,
+                  attachment: false,
+                }
+              );
+              return { ...file, url: signedPdfUrl };
+            } catch (e) {
+              return file;
+            }
           }
           return file;
         });
       }
       return obj;
     });
+
     res.json(notes);
   } catch (err) {
     console.error("GET NOTES ERROR:", err);
@@ -77,8 +93,10 @@ exports.getNotes = async (req, res) => {
 exports.createNote = async (req, res) => {
   try {
     const { title, subject, content, category, classLevel } = req.body;
-    if (!title || !subject || !content || !category || !classLevel) {
-      return res.status(400).json({ message: "All fields are required" });
+    if (!title || !subject || !category || !classLevel) {
+      return res
+        .status(400)
+        .json({ message: "Topic, Subject, Category and Class/Level are required" });
     }
 
     const attachments = [];
@@ -86,11 +104,13 @@ exports.createNote = async (req, res) => {
     if (req.files && req.files.length > 0) {
       // upload each file to Cloudinary
       for (const file of req.files) {
+        const uploadResourceType = file.mimetype === "application/pdf" ? "raw" : "image";
+
         const result = await new Promise((resolve, reject) => {
           const stream = cloudinary.uploader.upload_stream(
             {
               folder: "education_notes",
-              resource_type: "auto",
+              resource_type: uploadResourceType,
             },
             (error, result) => {
               if (result) resolve(result);
@@ -114,7 +134,7 @@ exports.createNote = async (req, res) => {
     const note = await Note.create({
       title,
       subject,
-      content,
+      content: content || "",
       category,
       classLevel,
       attachments,
@@ -176,11 +196,13 @@ exports.updateNote = async (req, res) => {
     // handle new file uploads
     if (req.files && req.files.length > 0) {
       for (const file of req.files) {
+        const uploadResourceType = file.mimetype === "application/pdf" ? "raw" : "image";
+
         const result = await new Promise((resolve, reject) => {
           const stream = cloudinary.uploader.upload_stream(
             {
               folder: "education_notes",
-              resource_type: "auto",
+              resource_type: uploadResourceType,
             },
             (error, result) => {
               if (result) resolve(result);
@@ -205,6 +227,77 @@ exports.updateNote = async (req, res) => {
     res.json(note);
   } catch (err) {
     console.error("UPDATE NOTE ERROR:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// GET /api/notes/:id/attachments/:index/download
+exports.downloadAttachment = async (req, res) => {
+  try {
+    const { id, index } = req.params;
+    const attachmentIndex = Number(index);
+
+    if (!Number.isInteger(attachmentIndex) || attachmentIndex < 0) {
+      return res.status(400).json({ message: "Invalid attachment index" });
+    }
+
+    const note = await Note.findById(id).lean();
+    if (!note) return res.status(404).json({ message: "Note not found" });
+
+    const file = note.attachments?.[attachmentIndex];
+    if (!file) return res.status(404).json({ message: "Attachment not found" });
+
+    const isPdf =
+      file?.mimetype === "application/pdf" ||
+      path.extname(file?.originalName || "").toLowerCase() === ".pdf";
+
+    let sourceUrl = file.url;
+    if (isPdf && file.public_id) {
+      const ext = path.extname(file.originalName || "").replace(".", "") || "pdf";
+      sourceUrl = cloudinary.utils.private_download_url(file.public_id, ext, {
+        resource_type: file.resource_type || "raw",
+        type: "upload",
+        expires_at: Math.floor(Date.now() / 1000) + 3600,
+        attachment: false,
+      });
+    }
+
+    if (!sourceUrl) {
+      return res.status(400).json({ message: "Attachment URL is missing" });
+    }
+
+    const safeName = (file.originalName || `attachment-${attachmentIndex + 1}`)
+      .replace(/[\r\n"]/g, "_")
+      .trim();
+
+    res.setHeader("Content-Disposition", `attachment; filename="${safeName}"; filename*=UTF-8''${encodeURIComponent(safeName)}`);
+    if (file.mimetype) {
+      res.setHeader("Content-Type", file.mimetype);
+    }
+
+    const client = sourceUrl.startsWith("https") ? https : http;
+    client
+      .get(sourceUrl, (upstream) => {
+        if (upstream.statusCode && upstream.statusCode >= 400) {
+          res.status(502).json({ message: "Unable to download attachment" });
+          upstream.resume();
+          return;
+        }
+
+        if (!file.mimetype && upstream.headers["content-type"]) {
+          res.setHeader("Content-Type", upstream.headers["content-type"]);
+        }
+
+        upstream.pipe(res);
+      })
+      .on("error", (err) => {
+        console.error("DOWNLOAD ATTACHMENT ERROR:", err);
+        if (!res.headersSent) {
+          res.status(500).json({ message: "Failed to download attachment" });
+        }
+      });
+  } catch (err) {
+    console.error("DOWNLOAD ATTACHMENT ERROR:", err);
     res.status(500).json({ message: "Server error" });
   }
 };
