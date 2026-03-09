@@ -1,6 +1,7 @@
 const Note = require("../models/Note");
 const https = require("https");
 const http = require("http");
+const path = require("path");
 const cloudinary = require("../config/cloudinary");
 
 // GET /api/notes
