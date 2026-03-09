@@ -23,6 +23,9 @@ module.exports = async (req, res) => {
 		return app(req, res);
 	} catch (error) {
 		console.error("Serverless startup error:", error);
-		return res.status(500).json({ message: "Server failed to start" });
+		return res.status(500).json({ 
+			message: "Server failed to start", 
+			error: error.message 
+		});
 	}
 };
