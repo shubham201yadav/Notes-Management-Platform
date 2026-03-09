@@ -1,15 +1,7 @@
 const Note = require("../models/Note");
-const fs = require("fs");
-const path = require("path");
 const https = require("https");
 const http = require("http");
 const cloudinary = require("../config/cloudinary");
-
-// Ensure uploads directory exists
-const uploadsDir = path.join(__dirname, "../uploads");
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
-}
 
 // GET /api/notes
 exports.getNotes = async (req, res) => {
