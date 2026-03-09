@@ -24,9 +24,6 @@ app.use(cors({
 
 app.use(express.json());
 
-// Serve uploaded files
-app.use("/api/uploads", express.static("./uploads"));
-
 app.use("/api/auth", authRoutes);
 app.use("/api/users", usersRoutes);
 app.use("/api/admin", adminRoutes);
