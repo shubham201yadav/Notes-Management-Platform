@@ -14,7 +14,7 @@ const ManageUsers = () => {
     name: "",
     email: "",
     password: "",
-    role: "student",
+    role: "user",
   });
   const [pendingRoleChange, setPendingRoleChange] = useState(null);
   const [updatingRoleId, setUpdatingRoleId] = useState(null);
@@ -58,24 +58,26 @@ const ManageUsers = () => {
 
   const roleCounts = users.reduce(
     (acc, u) => {
-      const r = u.role || "student";
+      const r = u.role || "user";
       acc[r] = (acc[r] || 0) + 1;
       return acc;
     },
-    { admin: 0, subadmin: 0, student: 0 }
+    { admin: 0, subadmin: 0, student: 0, user: 0 }
   );
 
   // Helper for Role Badges
   const getRoleBadge = (role) => {
     const base = "px-2.5 py-0.5 rounded-full text-xs font-medium capitalize";
     if (role === "admin") return `${base} bg-purple-100 text-purple-700`;
-    if (role === "editor") return `${base} bg-blue-100 text-blue-700`;
+    if (role === "subadmin") return `${base} bg-blue-100 text-blue-700`;
+    if (role === "student") return `${base} bg-emerald-100 text-emerald-700`;
+    if (role === "user") return `${base} bg-cyan-100 text-cyan-700`;
     return `${base} bg-gray-100 text-gray-700`;
   };
 
   const handleRoleChange = (user, newRole) => {
-    if ((user.role || "student") === newRole) return;
-    setPendingRoleChange({ user, newRole, oldRole: user.role || "student" });
+    if ((user.role || "user") === newRole) return;
+    setPendingRoleChange({ user, newRole, oldRole: user.role || "user" });
   };
 
   const confirmRoleChange = async () => {
@@ -116,7 +118,7 @@ const ManageUsers = () => {
       name: "",
       email: "",
       password: "",
-      role: "student",
+      role: "user",
     });
   };
 
@@ -172,7 +174,7 @@ const ManageUsers = () => {
       </div>
 
       {/* Top summary counts */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 md:gap-4 mb-6">
         <div className="bg-white/90 border border-amber-200 p-3 md:p-4 rounded-lg shadow">
           <p className="text-xs md:text-sm text-amber-700">Total users</p>
           <p className="text-lg md:text-xl font-semibold">{users.length}</p>
@@ -184,6 +186,10 @@ const ManageUsers = () => {
         <div className="bg-white/90 border border-amber-200 p-3 md:p-4 rounded-lg shadow">
           <p className="text-xs md:text-sm text-amber-700">Subadmins</p>
           <p className="text-lg md:text-xl font-semibold">{roleCounts.subadmin}</p>
+        </div>
+        <div className="bg-white/90 border border-amber-200 p-3 md:p-4 rounded-lg shadow">
+          <p className="text-xs md:text-sm text-amber-700">Users</p>
+          <p className="text-lg md:text-xl font-semibold">{roleCounts.user}</p>
         </div>
         <div className="bg-white/90 border border-amber-200 p-3 md:p-4 rounded-lg shadow">
           <p className="text-xs md:text-sm text-amber-700">Students</p>
@@ -259,10 +265,11 @@ const ManageUsers = () => {
                     <div>
                       <label className="text-xs text-amber-700">Change role</label>
                       <select
-                        value={user.role || "student"}
+                        value={user.role || "user"}
                         onChange={(e) => handleRoleChange(user, e.target.value)}
                         className="mt-1 w-full border-gray-200 text-sm rounded-md px-3 py-2 min-h-[42px]"
                       >
+                        <option value="user">user</option>
                         <option value="student">student</option>
                         <option value="subadmin">subadmin</option>
                         <option value="admin">admin</option>
@@ -313,10 +320,11 @@ const ManageUsers = () => {
                         <div className="flex items-center gap-2 flex-wrap">
                           <span className={getRoleBadge(user.role)}>{user.role || "user"}</span>
                           <select
-                            value={user.role || "student"}
+                            value={user.role || "user"}
                             onChange={(e) => handleRoleChange(user, e.target.value)}
                             className="ml-2 border-gray-200 text-xs md:text-sm rounded-md px-2 py-1.5 min-h-[36px]"
                           >
+                            <option value="user">user</option>
                             <option value="student">student</option>
                             <option value="subadmin">subadmin</option>
                             <option value="admin">admin</option>
@@ -446,6 +454,7 @@ const ManageUsers = () => {
                   onChange={(e) => setNewUser((prev) => ({ ...prev, role: e.target.value }))}
                   className="w-full border border-amber-300 rounded-lg px-3 py-2.5 text-sm sm:text-base min-h-[44px] focus:outline-none focus:ring-2 focus:ring-amber-400"
                 >
+                  <option value="user">user</option>
                   <option value="student">student</option>
                   <option value="subadmin">subadmin</option>
                   <option value="admin">admin</option>

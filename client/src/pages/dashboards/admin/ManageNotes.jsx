@@ -428,7 +428,7 @@ const EmptyState = () => (
 );
 
 const NoteCard = ({ note, onDelete, onEdit, onDownload }) => (
-  <div className="bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-xl transition flex flex-col">
+  <div className="bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-xl transition flex flex-col overflow-hidden">
     <div className="p-4 md:p-5 border-b bg-slate-50 flex justify-between items-start md:items-center gap-2">
       <h3 className="font-semibold text-base md:text-lg flex-1 break-words">{note.title}</h3>
       <div className="flex gap-2 flex-shrink-0">
@@ -464,9 +464,9 @@ const NoteCard = ({ note, onDelete, onEdit, onDownload }) => (
                 key={idx}
                 type="button"
                 onClick={() => onDownload(note._id, idx, file.originalName)}
-                className="flex items-center justify-between gap-2 text-xs bg-amber-50 hover:bg-yellow-50 border border-amber-200 p-2.5 md:p-2 rounded-md min-h-[44px]"
+                className="w-full min-w-0 flex items-center justify-between gap-2 text-xs bg-amber-50 hover:bg-yellow-50 border border-amber-200 p-2.5 md:p-2 rounded-md min-h-[44px]"
               >
-                <span className="truncate">{file.originalName || "Attachment"}</span>
+                <span className="min-w-0 flex-1 truncate text-left">{file.originalName || "Attachment"}</span>
                 <Download size={13} className="flex-shrink-0" />
               </button>
             ))}

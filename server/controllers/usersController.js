@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 exports.createUser = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
-    const allowedRoles = ['student', 'admin', 'subadmin'];
+    const allowedRoles = ['student', 'admin', 'subadmin', 'user'];
 
     if (!name || !email || !password || !role) {
       return res.status(400).json({ message: 'All fields are required' });
@@ -79,7 +79,7 @@ exports.updateUserRole = async (req, res) => {
   try {
     const { id } = req.params;
     const { role } = req.body;
-    const allowed = ['student', 'admin', 'subadmin'];
+    const allowed = ['student', 'admin', 'subadmin', 'user'];
     if (!allowed.includes(role)) return res.status(400).json({ message: 'Invalid role' });
 
     const user = await User.findById(id);

@@ -22,9 +22,9 @@ const Navbar = () => {
     if (role === "admin") {
       navigate("/admin");
     } else if (role === "subadmin") {
-      navigate("/subadmin-dashboard");
+      navigate("/subadmin");
     } else {
-      navigate("/student");
+      navigate("/user");
     }
   };
 

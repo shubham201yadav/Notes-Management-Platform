@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import AuthProvider from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ScrollToTop from "./components/ScrollToTop";
@@ -15,6 +15,8 @@ import ForgotPassword from "./pages/ForgotPassword";
 // Layout
 import AdminLayout from "./layouts/AdminLayout";
 import StudentLayout from "./layouts/StudentLayout";
+import SubAdminLayout from "./layouts/SubAdminLayout";
+import UserLayout from "./layouts/UserLayout";
 
 // Admin Pages
 import AdminHome from "./pages/dashboards/admin/AdminHome";
@@ -28,8 +30,15 @@ import Settings from "./pages/dashboards/admin/Settings";
 import StudentDashboard from "./pages/dashboards/student/StudentDashboard";
 import StudentNotes from "./pages/dashboards/student/StudentNotes";
 
-// Other Dashboards
-import SubAdminDashboard from "./pages/dashboards/SubAdminDashboard";
+// Subadmin Pages
+import SubAdminHome from "./pages/dashboards/subadmin/SubAdminHome";
+import SubAdminUsers from "./pages/dashboards/subadmin/SubAdminUsers";
+import SubAdminNotes from "./pages/dashboards/subadmin/SubAdminNotes";
+import SubAdminProfile from "./pages/dashboards/subadmin/SubAdminProfile";
+
+// User Pages
+import UserDashboard from "./pages/dashboards/user/UserDashboard";
+import UserProfile from "./pages/dashboards/user/UserProfile";
 
 function App() {
   return (
@@ -79,13 +88,34 @@ function App() {
 
           {/* ================= SUBADMIN ROUTE ================= */}
           <Route
-            path="/subadmin-dashboard"
+            path="/subadmin"
             element={
               <ProtectedRoute allowedRoles={["subadmin"]}>
-                <SubAdminDashboard />
+                <SubAdminLayout />
               </ProtectedRoute>
             }
-          />
+          >
+            <Route index element={<SubAdminHome />} />
+            <Route path="users" element={<SubAdminUsers />} />
+            <Route path="notes" element={<SubAdminNotes />} />
+            <Route path="profile" element={<SubAdminProfile />} />
+          </Route>
+
+          {/* ================= USER ROUTES ================= */}
+          <Route
+            path="/user"
+            element={
+              <ProtectedRoute allowedRoles={["user", "student"]}>
+                <UserLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<UserDashboard />} />
+            <Route path="profile" element={<UserProfile />} />
+          </Route>
+
+          {/* Keep old subadmin path working */}
+          <Route path="/subadmin-dashboard" element={<Navigate to="/subadmin" replace />} />
 
           {/* ================= FALLBACK ================= */}
           <Route path="*" element={<Home />} />
