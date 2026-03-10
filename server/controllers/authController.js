@@ -112,11 +112,51 @@ exports.forgotPassword = async (req, res) => {
 
     await Otp.create({ email, otp: otpCode, expiresAt });
 
+    const appName = process.env.APP_NAME || "Online Education";
+    const supportEmail = process.env.SUPPORT_EMAIL || process.env.EMAIL;
+    const resetEmailHtml = `
+      <div style="font-family: Arial, sans-serif; background: #f8fafc; padding: 24px; color: #0f172a;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width: 620px; margin: 0 auto; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden;">
+          <tr>
+            <td style="background: linear-gradient(90deg, #f59e0b, #f97316); padding: 18px 24px; color: #ffffff; font-size: 18px; font-weight: 700;">
+              ${appName}
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 24px;">
+              <h2 style="margin: 0 0 12px; font-size: 22px; color: #111827;">Reset Your Password</h2>
+              <p style="margin: 0 0 16px; font-size: 14px; line-height: 1.6; color: #334155;">
+                We received a request to reset your password. Use the OTP below to continue.
+              </p>
+
+              <div style="margin: 18px 0; padding: 14px; border: 1px dashed #f59e0b; border-radius: 10px; background: #fffbeb; text-align: center;">
+                <p style="margin: 0 0 6px; font-size: 12px; color: #92400e; letter-spacing: 0.08em; text-transform: uppercase;">Your One-Time Password</p>
+                <p style="margin: 0; font-size: 30px; font-weight: 800; letter-spacing: 0.2em; color: #b45309;">${otpCode}</p>
+              </div>
+
+              <p style="margin: 0 0 10px; font-size: 14px; color: #334155;">
+                This OTP is valid for <strong>10 minutes</strong>.
+              </p>
+              <p style="margin: 0; font-size: 13px; color: #64748b; line-height: 1.6;">
+                If you did not request this, please ignore this email. Your account remains secure.
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 14px 24px; border-top: 1px solid #e2e8f0; background: #f8fafc; font-size: 12px; color: #64748b;">
+              Need help? Contact us at <a href="mailto:${supportEmail}" style="color: #c2410c; text-decoration: none;">${supportEmail}</a>
+            </td>
+          </tr>
+        </table>
+      </div>
+    `;
+
     await transporter.sendMail({
       from: process.env.EMAIL,
       to: email,
-      subject: "Your password reset OTP",
-      html: `<p>Your password reset OTP is <b>${otpCode}</b>. It expires in 10 minutes.</p>`
+      subject: `${appName} Password Reset OTP`,
+      text: `Your ${appName} password reset OTP is ${otpCode}. It expires in 10 minutes. If you did not request this, ignore this email.`,
+      html: resetEmailHtml,
     });
 
     res.json({ message: "OTP sent to email" });
