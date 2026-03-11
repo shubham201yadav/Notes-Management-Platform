@@ -98,6 +98,16 @@ const StudentTopbar = ({ toggleSidebar }) => {
             </div>
 
             <button
+              onClick={() => {
+                setIsProfileOpen(false);
+                navigate("/student/profile");
+              }}
+              className="w-full text-left px-4 py-3 text-sm text-amber-800 hover:bg-amber-50 font-medium transition min-h-[48px]"
+            >
+              View Profile
+            </button>
+
+            <button
               onClick={handleLogout}
               className="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-600 hover:bg-red-50 font-medium transition min-h-[48px]"
             >

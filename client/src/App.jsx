@@ -29,6 +29,7 @@ import Settings from "./pages/dashboards/admin/Settings";
 // Student Pages
 import StudentDashboard from "./pages/dashboards/student/StudentDashboard";
 import StudentNotes from "./pages/dashboards/student/StudentNotes";
+import StudentProfile from "./pages/dashboards/student/StudentProfile";
 
 // Subadmin Pages
 import SubAdminHome from "./pages/dashboards/subadmin/SubAdminHome";
@@ -67,6 +68,7 @@ function App() {
           >
             <Route index element={<StudentDashboard />} />
             <Route path="notes" element={<StudentNotes />} />
+            <Route path="profile" element={<StudentProfile />} />
           </Route>
 
           {/* ================= ADMIN ROUTES ================= */}
@@ -105,7 +107,7 @@ function App() {
           <Route
             path="/user"
             element={
-              <ProtectedRoute allowedRoles={["user", "student"]}>
+              <ProtectedRoute allowedRoles={["user"]}>
                 <UserLayout />
               </ProtectedRoute>
             }

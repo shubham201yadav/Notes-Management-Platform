@@ -47,6 +47,8 @@ const Login = () => {
         navigate("/admin");
       } else if (role === "subadmin") {
         navigate("/subadmin");
+      } else if (role === "student") {
+        navigate("/student");
       } else {
         navigate("/user");
       }

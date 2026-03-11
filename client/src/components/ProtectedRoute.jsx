@@ -3,13 +3,19 @@ import { Navigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
-  const { user } = useContext(AuthContext);
+  const { user, authReady } = useContext(AuthContext);
+  const token = user?.token || localStorage.getItem("token");
+  const role = user?.role || localStorage.getItem("role");
 
-  if (!user) {
+  if (!authReady) {
+    return null;
+  }
+
+  if (!token || !role) {
     return <Navigate to="/login" />;
   }
 
-  if (!allowedRoles.includes(user.role)) {
+  if (!allowedRoles.includes(role)) {
     return <Navigate to="/login" />;
   }
 

@@ -27,7 +27,7 @@ const StudentLayout = () => {
       )}
       <div className="flex-1 flex flex-col">
         <StudentTopbar toggleSidebar={toggleSidebar} />
-        <main className="p-8">
+        <main className="p-4 sm:p-6 lg:p-8">
           <Outlet />
         </main>
       </div>

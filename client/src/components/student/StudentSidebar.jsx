@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 import {
   LayoutDashboard,
   BookOpen,
+  UserCircle,
   ChevronLeft,
   ChevronRight,
   LogOut,
@@ -18,6 +19,7 @@ const StudentSidebar = ({ close }) => {
   const menuItems = [
     { name: "Dashboard", path: "/student", icon: LayoutDashboard },
     { name: "My Notes", path: "/student/notes", icon: BookOpen },
+    { name: "Profile", path: "/student/profile", icon: UserCircle },
   ];
 
   const handleLogout = () => {

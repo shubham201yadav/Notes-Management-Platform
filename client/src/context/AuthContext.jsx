@@ -11,6 +11,7 @@ export const useAuth = () => {
 const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
+  const [authReady, setAuthReady] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -21,6 +22,8 @@ const AuthProvider = ({ children }) => {
     if (token && role) {
       setUser({ token, role, name, email });
     }
+
+    setAuthReady(true);
   }, []);
 
   const logout = () => {
@@ -33,7 +36,7 @@ const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, setUser, logout }}>
+    <AuthContext.Provider value={{ user, setUser, logout, authReady }}>
       {children}
     </AuthContext.Provider>
   );
