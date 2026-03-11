@@ -29,7 +29,8 @@ const Footer = () => {
           <ul className="space-y-2 text-sm">
             <li><FooterLink to="/">Home</FooterLink></li>
             <li><FooterLink to="/about">About</FooterLink></li>
-            <li><FooterLink to="/portfolio">Portfolio</FooterLink></li>
+            <li><FooterLink to="/books">Books</FooterLink></li>
+            <li><FooterLink to="/contact">Contact</FooterLink></li>
 
           </ul>
         </div>
@@ -44,6 +45,7 @@ const Footer = () => {
             </li>
             <li><FooterLink to="/login">Student Login</FooterLink></li>
             <li><FooterLink to="/register">Register Now</FooterLink></li>
+            <li><FooterLink to="/books">Buy Books</FooterLink></li>
             <li><FooterLink to="/about">About Teacher</FooterLink></li>
           </ul>
         </div>
@@ -70,6 +72,8 @@ const Footer = () => {
         © {new Date().getFullYear()} Newtan's Unity - Geography by Newtan Mandal. All rights reserved. 
         <span className="mx-2">|</span> 
         Privacy Policy
+        <span className="mx-2">|</span>
+        Developed by Sampad Biswas
       </div>
     </footer>
   );

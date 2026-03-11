@@ -6,7 +6,7 @@ import ScrollToTop from "./components/ScrollToTop";
 // Public Pages
 import Home from "./pages/Home";
 import About from "./pages/About";
-import Portfolio from "./pages/Portfolio";
+import Books from "./pages/Books";
 import Contact from "./pages/contact";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -51,7 +51,7 @@ function App() {
           {/* ================= PUBLIC ROUTES ================= */}
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
-          <Route path="/portfolio" element={<Portfolio />} />
+          <Route path="/books" element={<Books />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />

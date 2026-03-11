@@ -44,6 +44,10 @@ const Home = () => {
 
 
             </div>
+
+            <p className="mt-6 text-sm text-amber-300/90 font-medium tracking-wide">
+              Developed by Sampad Biswas
+            </p>
           </div>
 
           {/* Right Card */}
