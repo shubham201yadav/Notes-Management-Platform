@@ -112,7 +112,7 @@ exports.forgotPassword = async (req, res) => {
 
     await Otp.create({ email, otp: otpCode, expiresAt });
 
-    const appName = process.env.APP_NAME || "Online Education";
+    const appName = process.env.APP_NAME || "Newtan's Unity";
     const supportEmail = process.env.SUPPORT_EMAIL || process.env.EMAIL;
     const resetEmailHtml = `
       <div style="font-family: Arial, sans-serif; background: #f8fafc; padding: 24px; color: #0f172a;">
