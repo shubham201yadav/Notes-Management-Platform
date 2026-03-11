@@ -74,6 +74,15 @@ const Footer = () => {
         Privacy Policy
         <span className="mx-2">|</span>
         Developed by Sampad Biswas
+        <span className="mx-2">|</span>
+        <a
+          href="https://portfolio-three-rho-6pmyjz7zav.vercel.app/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-amber-300 hover:text-amber-200 underline underline-offset-4"
+        >
+          Portfolio
+        </a>
       </div>
     </footer>
   );

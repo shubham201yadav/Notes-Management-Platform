@@ -47,6 +47,15 @@ const Home = () => {
 
             <p className="mt-6 text-sm text-amber-300/90 font-medium tracking-wide">
               Developed by Sampad Biswas
+              <span className="mx-2">|</span>
+              <a
+                href="https://portfolio-three-rho-6pmyjz7zav.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-amber-200 hover:text-white underline underline-offset-4"
+              >
+                Portfolio
+              </a>
             </p>
           </div>
 
