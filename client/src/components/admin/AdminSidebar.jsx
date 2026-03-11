@@ -4,7 +4,7 @@ import {
   Users,
   BookOpen,
   BarChart3,
-  Settings,
+  UserCircle,
   ChevronLeft,
   ChevronRight,
   FileText
@@ -17,10 +17,10 @@ const AdminSidebar = ({ close }) => {
   const menuItems = [
     { name: "Dashboard", path: "/admin", icon: LayoutDashboard },
     { name: "Manage Users", path: "/admin/users", icon: Users },
-    { name: "Manage Courses", path: "/admin/courses", icon: BookOpen },
     { name: "Manage Notes", path: "/admin/notes", icon: FileText },
+    { name: "Manage Courses", path: "/admin/courses", icon: BookOpen },
     { name: "Analytics", path: "/admin/analytics", icon: BarChart3 },
-    { name: "Settings", path: "/admin/settings", icon: Settings },
+    { name: "Profile", path: "/admin/profile", icon: UserCircle },
   ];
 
   return (

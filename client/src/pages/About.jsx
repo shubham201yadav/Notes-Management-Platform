@@ -47,13 +47,15 @@ const About = () => {
 
               {/* Right - Photo */}
               <div className="flex justify-center mt-10 md:mt-0">
-                <div className="relative w-72 h-72 md:w-96 md:h-96">
+                <div className="relative w-72 h-[24rem] md:w-96 md:h-[30rem]">
                   <div className="absolute inset-0 bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl p-1">
+                    <div className="w-full h-full rounded-2xl bg-slate-950/10 overflow-hidden">
                     <img 
-                      src="/educator.jpg" 
+                      src="/educator.jpeg" 
                       alt="Newtan Mandal"
-                      className="w-full h-full object-cover rounded-2xl"
+                      className="w-full h-full object-cover object-top rounded-2xl"
                     />
+                    </div>
                   </div>
                   <div className="absolute -bottom-6 right-1/2 translate-x-1/2 md:right-0 md:translate-x-0 bg-white text-slate-900 rounded-lg p-4 shadow-lg">
                     <p className="font-bold text-sm">M.A Geography<br/>NET-SET Qualified</p>

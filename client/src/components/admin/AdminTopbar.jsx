@@ -4,7 +4,6 @@ import {
   LogOut,
   Menu,
   Bell,
-  Settings,
   ChevronDown,
   User
 } from "lucide-react";
@@ -112,12 +111,14 @@ const AdminTopbar = ({ toggleSidebar }) => {
               </p>
             </div>
 
-            <button className="w-full flex items-center gap-3 px-4 py-3 text-sm text-amber-900 hover:bg-amber-50 transition min-h-[48px]">
-              <User size={16} /> Profile Settings
-            </button>
-
-            <button className="w-full flex items-center gap-3 px-4 py-3 text-sm text-amber-900 hover:bg-amber-50 transition min-h-[48px]">
-              <Settings size={16} /> Preferences
+            <button
+              onClick={() => {
+                setIsProfileOpen(false);
+                navigate("/admin/profile");
+              }}
+              className="w-full flex items-center gap-3 px-4 py-3 text-sm text-amber-900 hover:bg-amber-50 transition min-h-[48px]"
+            >
+              <User size={16} /> Profile
             </button>
 
             <div className="h-[1px] bg-amber-100 my-2 mx-3"></div>

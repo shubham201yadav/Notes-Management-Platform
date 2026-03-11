@@ -24,7 +24,7 @@ import ManageUsers from "./pages/dashboards/admin/ManageUsers";
 import ManageCourses from "./pages/dashboards/admin/ManageCourses";
 import ManageNotes from "./pages/dashboards/admin/ManageNotes";
 import Analytics from "./pages/dashboards/admin/Analytics";
-import Settings from "./pages/dashboards/admin/Settings";
+import AdminProfile from "./pages/dashboards/admin/AdminProfile";
 
 // Student Pages
 import StudentDashboard from "./pages/dashboards/student/StudentDashboard";
@@ -85,7 +85,7 @@ function App() {
             <Route path="courses" element={<ManageCourses />} />
             <Route path="notes" element={<ManageNotes />} />
             <Route path="analytics" element={<Analytics />} />
-            <Route path="settings" element={<Settings />} />
+            <Route path="profile" element={<AdminProfile />} />
           </Route>
 
           {/* ================= SUBADMIN ROUTE ================= */}
