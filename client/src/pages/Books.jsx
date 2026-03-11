@@ -12,43 +12,44 @@ import {
 const books = [
   {
     id: 1,
-    title: "Master Geography: School Edition",
-    subtitle: "Class 8-10",
-    price: 399,
-    originalPrice: 499,
+    title: "Paribesh Bhugol (Bengali Version)",
+    subtitle: "Published Book",
+    price: 326,
+    originalPrice: 420,
     description:
-      "Complete foundation for map work, physical geography, and exam-focused short notes.",
+      "Comprehensive Bengali Geography guide for students with concept-based explanations and exam-focused preparation.",
     badge: "Bestseller",
     rating: 4.9,
     students: "1,200+",
+    buyLink: "https://www.flipkart.com/paribesh-bhugol-bengali-version/p/itm9d1c7a65d28ad",
   },
   {
     id: 2,
-    title: "Advanced Geography Guide",
-    subtitle: "Class 11-12",
-    price: 549,
-    originalPrice: 699,
+    title: "Anchal Ebong Anchalic Unnayan",
+    subtitle: "Region and Regional Development",
+    price: 259,
+    originalPrice: 300,
     description:
-      "Detailed chapter-wise explanations, model answers, and board exam strategy.",
-    badge: "New",
+      "Focused book on region and regional development concepts for advanced Geography learners.",
+    badge: "Popular",
     rating: 4.8,
-    students: "850+",
+    students: "900+",
+    buyLink: "https://www.flipkart.com/anchal-ebong-anchalik-unnayan-region-regional-development/p/itmb35d13c9b6078?pid=RBKG8Z8HCNYKHAPG&lid=LSTRBKG8Z8HCNYKHAPGJFAYJG&marketplace=FLIPKART&q=Region+and+Regional+Development&store=bks&srno=s_1_3&otracker=search&otracker1=search&fm=organic&iid=39ccb7d1-5d80-40a2-8908-f627409a402c.RBKG8Z8HCNYKHAPG.SEARCH&ppt=pp&ppn=pp&ssid=bsufmakgwg0000001747276058264&qH=6fb1d15e79f50046",
   },
   {
     id: 3,
-    title: "College Geography Workbook",
-    subtitle: "Semester 1-6",
-    price: 699,
-    originalPrice: 899,
+    title: "Sanksipta Prasnottare Sammanik Bhugol",
+    subtitle: "Sahaj Patha Semester 1",
+    price: 189,
+    originalPrice: 200,
     description:
-      "University-level concepts with solved examples, diagrams, and practice sets.",
-    badge: "Popular",
+      "Concise question-answer format Geography guide for semester learners and quick revision.",
+    badge: "New",
     rating: 4.7,
     students: "700+",
+    buyLink: "https://www.flipkart.com/sanksipta-prasnottare-sammanik-bhugol-sahaj-patha-semester-1-newton-mandal/p/itm22572aa5715c5",
   },
 ];
-
-const BUY_LINK = "https://wa.me/9775911857?text=Hi%20I%20want%20to%20buy%20your%20Geography%20book";
 
 const Books = () => {
   return (
@@ -116,7 +117,7 @@ const Books = () => {
                     </div>
 
                     <a
-                      href={`${BUY_LINK}%20-%20${encodeURIComponent(book.title)}`}
+                      href={book.buyLink}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="mt-6 inline-flex items-center justify-center gap-2 w-full rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-semibold px-4 py-3 min-h-[44px] transition"
