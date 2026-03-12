@@ -10,9 +10,13 @@ const Register = () => {
     email: "",
     password: ""
   });
+  const [verificationCode, setVerificationCode] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [sendingCode, setSendingCode] = useState(false);
+  const [codeSent, setCodeSent] = useState(false);
   const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   const handleChange = (e) => {
     setFormData({
@@ -29,13 +33,24 @@ const Register = () => {
       return;
     }
 
+    if (!verificationCode) {
+      setError("Please enter the email verification code");
+      return;
+    }
+
     setError("");
+    setSuccessMessage("");
 
     try {
       setLoading(true);
-      await API.post("/auth/register", formData);
+      await API.post("/auth/register", {
+        ...formData,
+        verificationCode,
+      });
       setFormData({ name: "", email: "", password: "" });
+      setVerificationCode("");
       setConfirmPassword("");
+      setCodeSent(false);
       alert("Registration Successful ✅");
       navigate("/login");
 
@@ -43,6 +58,29 @@ const Register = () => {
       setError(error.response?.data?.message || "Registration Failed");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleSendVerificationCode = async () => {
+    if (!formData.email) {
+      setError("Please enter your email first");
+      return;
+    }
+
+    setError("");
+    setSuccessMessage("");
+
+    try {
+      setSendingCode(true);
+      const response = await API.post("/auth/send-registration-otp", {
+        email: formData.email,
+      });
+      setCodeSent(true);
+      setSuccessMessage(response.data?.message || "Verification code sent");
+    } catch (err) {
+      setError(err.response?.data?.message || "Failed to send verification code");
+    } finally {
+      setSendingCode(false);
     }
   };
 
@@ -86,6 +124,25 @@ const Register = () => {
               className="w-full p-3 rounded-lg bg-white/20 placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-amber-400 transition"
             />
 
+            <button
+              type="button"
+              disabled={sendingCode || loading}
+              onClick={handleSendVerificationCode}
+              className="w-full py-2.5 rounded-lg bg-white/20 border border-white/30 hover:bg-white/30 transition font-medium"
+            >
+              {sendingCode ? "Sending code..." : codeSent ? "Resend Verification Code" : "Send Verification Code"}
+            </button>
+
+            <input
+              type="text"
+              placeholder="Enter Verification Code"
+              value={verificationCode}
+              onChange={(e) => setVerificationCode(e.target.value)}
+              required
+              disabled={loading}
+              className="w-full p-3 rounded-lg bg-white/20 placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-amber-400 transition"
+            />
+
             <input
               type="password"
               name="password"
@@ -110,6 +167,12 @@ const Register = () => {
             {error && (
               <p className="text-red-300 text-sm text-center">
                 {error}
+              </p>
+            )}
+
+            {successMessage && (
+              <p className="text-emerald-300 text-sm text-center">
+                {successMessage}
               </p>
             )}
 

@@ -37,6 +37,8 @@ const ManageNotes = () => {
   });
 
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [existingAttachments, setExistingAttachments] = useState([]);
+  const [removedAttachmentIndexes, setRemovedAttachmentIndexes] = useState([]);
   const isFirstLoad = useRef(true);
 
   /* ================= FETCH NOTES ================= */
@@ -114,6 +116,15 @@ const ManageNotes = () => {
     setSelectedFiles((prev) => prev.filter((_, i) => i !== index));
   };
 
+  const removeExistingAttachment = (originalIndex) => {
+    setExistingAttachments((prev) =>
+      prev.filter((file) => file._originalIndex !== originalIndex)
+    );
+    setRemovedAttachmentIndexes((prev) =>
+      prev.includes(originalIndex) ? prev : [...prev, originalIndex]
+    );
+  };
+
   const handleSubmitNote = async (e) => {
     e.preventDefault();
 
@@ -127,8 +138,7 @@ const ManageNotes = () => {
       return;
     }
 
-    const hasExistingAttachments =
-      editingNote && Array.isArray(editingNote.attachments) && editingNote.attachments.length > 0;
+    const hasExistingAttachments = editingNote && existingAttachments.length > 0;
 
     if (selectedFiles.length === 0 && !hasExistingAttachments) {
       alert("Please upload at least one study material file (PDF/Image)");
@@ -146,6 +156,10 @@ const ManageNotes = () => {
       selectedFiles.forEach((file) => {
         data.append("files", file);
       });
+
+      if (editingNote && removedAttachmentIndexes.length > 0) {
+        data.append("removeAttachmentIndexes", JSON.stringify(removedAttachmentIndexes));
+      }
 
       let res;
       if (editingNote) {
@@ -171,6 +185,8 @@ const ManageNotes = () => {
         classLevel: "",
       });
       setSelectedFiles([]);
+      setExistingAttachments([]);
+      setRemovedAttachmentIndexes([]);
       setEditingNote(null);
       setShowForm(false);
     } catch (err) {
@@ -202,6 +218,13 @@ const ManageNotes = () => {
       classLevel: note.classLevel || "",
     });
     setSelectedFiles([]);
+    setExistingAttachments(
+      (note.attachments || []).map((file, idx) => ({
+        ...file,
+        _originalIndex: idx,
+      }))
+    );
+    setRemovedAttachmentIndexes([]);
     setShowForm(true);
   };
 
@@ -258,6 +281,8 @@ const ManageNotes = () => {
                 classLevel: "",
               });
               setSelectedFiles([]);
+              setExistingAttachments([]);
+              setRemovedAttachmentIndexes([]);
               setShowForm(true);
             }}
             className="flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-yellow-500 hover:shadow-lg hover:scale-105 text-white px-5 md:px-6 py-2.5 md:py-3 rounded-xl font-medium transition-all duration-300 w-full lg:w-auto min-h-[44px]"
@@ -375,14 +400,17 @@ const ManageNotes = () => {
           formData={formData}
           setFormData={setFormData}
           selectedFiles={selectedFiles}
-          setSelectedFiles={setSelectedFiles}
+          existingAttachments={existingAttachments}
           handleFileChange={handleFileChange}
           removeSelectedFile={removeSelectedFile}
+          removeExistingAttachment={removeExistingAttachment}
           handleSubmit={handleSubmitNote}
           isSubmitting={isSubmitting}
           onClose={() => {
             setShowForm(false);
             setEditingNote(null);
+            setExistingAttachments([]);
+            setRemovedAttachmentIndexes([]);
           }}
           editing={!!editingNote}
         />
@@ -481,8 +509,10 @@ const CreateNoteModal = ({
   formData,
   setFormData,
   selectedFiles,
+  existingAttachments,
   handleFileChange,
   removeSelectedFile,
+  removeExistingAttachment,
   handleSubmit,
   isSubmitting,
   onClose,
@@ -619,6 +649,35 @@ const CreateNoteModal = ({
             <label className="block text-sm font-semibold text-slate-700 mb-2">
               Study Material Files (PDF/Image) *
             </label>
+
+            {editing && existingAttachments.length > 0 && (
+              <div className="mb-3 space-y-2">
+                <p className="text-sm font-medium text-slate-700">
+                  Existing files ({existingAttachments.length}):
+                </p>
+                {existingAttachments.map((file) => (
+                  <div
+                    key={`${file._originalIndex}-${file.originalName || "file"}`}
+                    className="flex items-center justify-between bg-amber-50 p-3 rounded-lg border border-amber-200 gap-2"
+                  >
+                    <div className="flex items-center gap-2 min-w-0 flex-1">
+                      <File size={16} className="text-amber-600 flex-shrink-0" />
+                      <span className="text-sm text-amber-900 truncate">
+                        {file.originalName || "Attachment"}
+                      </span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => removeExistingAttachment(file._originalIndex)}
+                      className="p-2 hover:bg-red-100 rounded transition flex-shrink-0 min-h-[40px] min-w-[40px] flex items-center justify-center"
+                      title="Remove this file"
+                    >
+                      <X size={16} className="text-red-500" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
             <label className="flex items-center gap-3 px-4 py-3 md:py-3 border-2 border-dashed border-amber-300 rounded-lg cursor-pointer hover:border-amber-500 transition min-h-[56px]">
               <Upload size={20} className="text-slate-400 flex-shrink-0" />
               <span className="text-slate-600 text-sm md:text-base">

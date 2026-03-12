@@ -9,9 +9,9 @@ const UserLayout = () => {
   const toggleSidebar = () => setSidebarOpen((o) => !o);
 
   return (
-    <div className="flex min-h-screen bg-slate-100">
+    <div className="flex h-screen overflow-hidden bg-slate-100">
       <aside
-        className={`fixed inset-y-0 left-0 z-30 transform transition-transform duration-300 md:static md:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-30 transform transition-transform duration-300 md:relative md:flex md:flex-shrink-0 md:translate-x-0 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -25,9 +25,9 @@ const UserLayout = () => {
         />
       )}
 
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         <UserTopbar toggleSidebar={toggleSidebar} />
-        <main className="p-8">
+        <main className="flex-1 overflow-y-auto p-4 md:p-8">
           <Outlet />
         </main>
       </div>

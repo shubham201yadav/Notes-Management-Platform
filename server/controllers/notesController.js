@@ -175,16 +175,58 @@ exports.deleteNote = async (req, res) => {
 exports.updateNote = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, subject, content, category, classLevel } = req.body;
+    const { title, subject, content, category, classLevel, removeAttachmentIndexes } = req.body;
 
     const note = await Note.findById(id);
     if (!note) return res.status(404).json({ message: "Note not found" });
 
-    if (title) note.title = title;
-    if (subject) note.subject = subject;
-    if (content) note.content = content;
-    if (category) note.category = category;
-    if (classLevel) note.classLevel = classLevel;
+    if (title !== undefined) note.title = title;
+    if (subject !== undefined) note.subject = subject;
+    if (content !== undefined) note.content = content;
+    if (category !== undefined) note.category = category;
+    if (classLevel !== undefined) note.classLevel = classLevel;
+
+    if (!Array.isArray(note.attachments)) {
+      note.attachments = [];
+    }
+
+    // Remove selected old attachments when editing.
+    if (removeAttachmentIndexes !== undefined) {
+      let indexes = [];
+
+      if (Array.isArray(removeAttachmentIndexes)) {
+        indexes = removeAttachmentIndexes.map((v) => Number(v));
+      } else if (typeof removeAttachmentIndexes === "string") {
+        try {
+          const parsed = JSON.parse(removeAttachmentIndexes);
+          if (Array.isArray(parsed)) {
+            indexes = parsed.map((v) => Number(v));
+          }
+        } catch (e) {
+          indexes = removeAttachmentIndexes
+            .split(",")
+            .map((v) => Number(v.trim()));
+        }
+      }
+
+      const uniqueIndexes = [...new Set(indexes)]
+        .filter((idx) => Number.isInteger(idx) && idx >= 0 && idx < note.attachments.length)
+        .sort((a, b) => b - a);
+
+      for (const idx of uniqueIndexes) {
+        const file = note.attachments[idx];
+        if (file?.public_id) {
+          try {
+            await cloudinary.uploader.destroy(file.public_id, {
+              resource_type: file.resource_type || "auto",
+            });
+          } catch (e) {
+            console.warn("Cloudinary delete error", e);
+          }
+        }
+        note.attachments.splice(idx, 1);
+      }
+    }
 
     // handle new file uploads
     if (req.files && req.files.length > 0) {

@@ -27,8 +27,8 @@ const UserSidebar = ({ close }) => {
   return (
     <aside
       className={`${
-        collapsed ? "w-72 md:w-20" : "w-72"
-      } sticky top-0 h-screen bg-slate-950/95 backdrop-blur-md text-white p-4 flex flex-col border-r border-white/10 transition-all duration-300`}
+        collapsed ? "w-[280px] md:w-20" : "w-[280px] md:w-72"
+      } h-full bg-slate-950/95 backdrop-blur-md text-white p-4 flex flex-col border-r border-white/10 transition-all duration-300 overflow-y-auto`}
     >
       <div className="flex items-center justify-between mb-10">
         {!collapsed && (

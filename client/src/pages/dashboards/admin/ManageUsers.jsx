@@ -18,6 +18,8 @@ const ManageUsers = () => {
   });
   const [pendingRoleChange, setPendingRoleChange] = useState(null);
   const [updatingRoleId, setUpdatingRoleId] = useState(null);
+  const [pendingDeleteUser, setPendingDeleteUser] = useState(null);
+  const [deletingId, setDeletingId] = useState(null);
 
   const fetchUsers = async () => {
     try {
@@ -35,16 +37,26 @@ const ManageUsers = () => {
     fetchUsers();
   }, []);
 
-  const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure? This user will be permanently removed.")) return;
+  const handleDelete = (user) => {
+    setPendingDeleteUser(user);
+  };
 
+  const confirmDelete = async () => {
+    if (!pendingDeleteUser) return;
+    const id = pendingDeleteUser._id || pendingDeleteUser.id;
     try {
+      setDeletingId(id);
       await API.delete(`/users/${id}`);
       setUsers((prev) => prev.filter((u) => (u._id || u.id) !== id));
+      setPendingDeleteUser(null);
     } catch (err) {
       alert(err.response?.data?.message || "Failed to delete user");
+    } finally {
+      setDeletingId(null);
     }
   };
+
+  const cancelDelete = () => setPendingDeleteUser(null);
 
   // Derived data
   const filteredUsers = users.filter((u) => {
@@ -277,7 +289,7 @@ const ManageUsers = () => {
                     </div>
 
                     <button
-                      onClick={() => handleDelete(user._id || user.id)}
+                      onClick={() => handleDelete(user)}
                       className="inline-flex items-center justify-center gap-2 h-10 w-full text-amber-700 border border-amber-200 hover:text-red-600 hover:bg-red-50 hover:border-red-200 rounded-lg transition-all"
                       title="Delete User"
                     >
@@ -339,7 +351,7 @@ const ManageUsers = () => {
                       </td>
                       <td className="px-4 md:px-6 py-3 md:py-4 text-right">
                         <button
-                          onClick={() => handleDelete(user._id || user.id)}
+                          onClick={() => handleDelete(user)}
                           className="inline-flex items-center justify-center p-2.5 md:p-2 text-amber-700 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all min-h-[44px] min-w-[44px] md:min-h-0 md:min-w-0"
                           title="Delete User"
                         >
@@ -354,6 +366,43 @@ const ManageUsers = () => {
           </>
         )}
       </div>
+
+      {pendingDeleteUser && (
+        <div className="fixed inset-0 z-50 bg-black/40 p-3 sm:p-4 flex items-end sm:items-center justify-center">
+          <div className="w-full max-w-sm bg-white rounded-2xl border border-red-200 shadow-xl">
+            <div className="px-4 sm:px-5 py-4 border-b border-red-100">
+              <h3 className="text-lg sm:text-xl font-semibold text-red-700">Delete User</h3>
+              <p className="text-xs sm:text-sm text-gray-600 mt-1">
+                Are you sure you want to permanently delete{" "}
+                <span className="font-bold text-gray-800">
+                  {pendingDeleteUser.name || pendingDeleteUser.fullName || pendingDeleteUser.email || "this user"}
+                </span>
+                ? This action cannot be undone.
+              </p>
+            </div>
+            <div className="p-4 sm:p-5">
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  type="button"
+                  onClick={cancelDelete}
+                  disabled={!!deletingId}
+                  className="w-full rounded-lg border border-gray-300 text-gray-700 px-4 py-2.5 min-h-[44px] hover:bg-gray-100 disabled:opacity-60 font-medium"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={confirmDelete}
+                  disabled={!!deletingId}
+                  className="w-full rounded-lg bg-red-500 hover:bg-red-600 disabled:bg-red-300 text-white px-4 py-2.5 min-h-[44px] font-medium"
+                >
+                  {deletingId ? "Deleting..." : "Delete"}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {pendingRoleChange && (
         <div className="fixed inset-0 z-50 bg-black/40 p-3 sm:p-4 flex items-end sm:items-center justify-center">
