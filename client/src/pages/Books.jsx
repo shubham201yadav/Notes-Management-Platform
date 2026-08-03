@@ -12,42 +12,39 @@ import {
 const books = [
   {
     id: 1,
-    title: "Paribesh Bhugol (Bengali Version)",
-    subtitle: "Published Book",
-    price: 326,
-    originalPrice: 420,
-    description:
-      "Comprehensive Bengali Geography guide for students with concept-based explanations and exam-focused preparation.",
-    badge: "Bestseller",
-    rating: 4.9,
-    students: "1,200+",
-    buyLink: "https://www.flipkart.com/paribesh-bhugol-bengali-version/p/itm9d1c7a65d28ad",
+    title: "Demo Book One",
+    subtitle: "Sample Edition",
+    price: 199,
+    originalPrice: 250,
+    description: "A fictional book card used to preview the bookstore layout and styling.",
+    badge: "Demo",
+    rating: 4.8,
+    students: "100+",
+    buyLink: "#",
   },
   {
     id: 2,
-    title: "Anchal Ebong Anchalic Unnayan",
-    subtitle: "Region and Regional Development",
-    price: 259,
-    originalPrice: 300,
-    description:
-      "Focused book on region and regional development concepts for advanced Geography learners.",
-    badge: "Popular",
-    rating: 4.8,
-    students: "900+",
-    buyLink: "https://www.flipkart.com/anchal-ebong-anchalik-unnayan-region-regional-development/p/itmb35d13c9b6078?pid=RBKG8Z8HCNYKHAPG&lid=LSTRBKG8Z8HCNYKHAPGJFAYJG&marketplace=FLIPKART&q=Region+and+Regional+Development&store=bks&srno=s_1_3&otracker=search&otracker1=search&fm=organic&iid=39ccb7d1-5d80-40a2-8908-f627409a402c.RBKG8Z8HCNYKHAPG.SEARCH&ppt=pp&ppn=pp&ssid=bsufmakgwg0000001747276058264&qH=6fb1d15e79f50046",
+    title: "Demo Book Two",
+    subtitle: "Preview Collection",
+    price: 149,
+    originalPrice: 200,
+    description: "Another sample item created to show how book details appear in the demo interface.",
+    badge: "Sample",
+    rating: 4.6,
+    students: "80+",
+    buyLink: "#",
   },
   {
     id: 3,
-    title: "Sanksipta Prasnottare Sammanik Bhugol",
-    subtitle: "Sahaj Patha Semester 1",
-    price: 189,
-    originalPrice: 200,
-    description:
-      "Concise question-answer format Geography guide for semester learners and quick revision.",
-    badge: "New",
+    title: "Demo Book Three",
+    subtitle: "Placeholder Volume",
+    price: 129,
+    originalPrice: 180,
+    description: "This placeholder card demonstrates a basic product section for a demo website.",
+    badge: "Preview",
     rating: 4.7,
-    students: "700+",
-    buyLink: "https://www.flipkart.com/sanksipta-prasnottare-sammanik-bhugol-sahaj-patha-semester-1-newton-mandal/p/itm22572aa5715c5",
+    students: "60+",
+    buyLink: "#",
   },
 ];
 
@@ -59,21 +56,20 @@ const Books = () => {
           <div className="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 sm:p-10 md:p-12">
             <div className="max-w-3xl">
               <p className="inline-flex items-center gap-2 text-xs sm:text-sm bg-amber-500/15 border border-amber-400/40 text-amber-300 px-3 py-1.5 rounded-full">
-                <BookOpen size={14} /> Published Books
+                <BookOpen size={14} /> Demo Books
               </p>
               <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight">
-                Professional Geography Book Collection
+                Demo Geography Book Collection
               </h1>
               <p className="mt-4 text-slate-300 text-sm sm:text-base leading-relaxed">
-                Curated books by Newtan Mandal for school and college learners. Each book is structured for concept clarity,
-                exam accuracy, and practical learning.
+                This bookstore section uses sample book data for preview purposes. No real products or purchase links are being represented here.
               </p>
             </div>
 
             <div className="mt-6 sm:mt-8 grid grid-cols-1 sm:grid-cols-3 gap-3">
-              <TrustChip icon={<BadgeCheck size={15} />} label="Verified Content" />
-              <TrustChip icon={<Truck size={15} />} label="Fast Shipping Support" />
-              <TrustChip icon={<ShieldCheck size={15} />} label="Secure Order Process" />
+              <TrustChip icon={<BadgeCheck size={15} />} label="Sample Content" />
+              <TrustChip icon={<Truck size={15} />} label="Demo Delivery" />
+              <TrustChip icon={<ShieldCheck size={15} />} label="Preview Only" />
             </div>
           </div>
 
@@ -118,19 +114,15 @@ const Books = () => {
 
                     <a
                       href={book.buyLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
                       className="mt-6 inline-flex items-center justify-center gap-2 w-full rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-semibold px-4 py-3 min-h-[44px] transition"
                     >
-                      <ShoppingCart size={17} /> Buy This Book <ArrowRight size={16} />
+                      <ShoppingCart size={17} /> View Demo <ArrowRight size={16} />
                     </a>
                   </div>
                 </article>
               );
             })}
           </div>
-
-    
         </section>
       </div>
     </MainLayout>
