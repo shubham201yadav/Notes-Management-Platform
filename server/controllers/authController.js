@@ -6,7 +6,7 @@ const transporter = require("../config/mailer");
 const generateOTP = require("../utils/generateOTP");
 
 const sendWelcomeEmail = async ({ name, email }) => {
-  const appName = process.env.APP_NAME || "Newtan's Unity";
+  const appName = process.env.APP_NAME || "Notes Manage Platform";
   const supportEmail = process.env.SUPPORT_EMAIL || process.env.EMAIL;
 
   const welcomeHtml = `
@@ -47,7 +47,7 @@ const sendWelcomeEmail = async ({ name, email }) => {
 };
 
 const sendRegistrationOtpEmail = async ({ email, otpCode }) => {
-  const appName = process.env.APP_NAME || "Newtan's Unity";
+  const appName = process.env.APP_NAME || "Notes Manage Platform";
   const supportEmail = process.env.SUPPORT_EMAIL || process.env.EMAIL;
 
   const registrationOtpHtml = `
@@ -268,7 +268,7 @@ exports.forgotPassword = async (req, res) => {
       expiresAt,
     });
 
-    const appName = process.env.APP_NAME || "Newtan's Unity";
+    const appName = process.env.APP_NAME || "Notes Manage Platform";
     const supportEmail = process.env.SUPPORT_EMAIL || process.env.EMAIL;
     const resetEmailHtml = `
       <div style="font-family: Arial, sans-serif; background: #f8fafc; padding: 24px; color: #0f172a;">
