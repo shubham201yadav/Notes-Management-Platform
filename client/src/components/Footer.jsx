@@ -10,11 +10,10 @@ const Footer = () => {
         <div className="col-span-1 md:col-span-1">
           <div className="flex items-center gap-2 text-white mb-4">
             <GraduationCap className="text-amber-500 w-6 h-6" />
-            <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent">Newtan's Unity</span>
+            <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent">Notes Manage Platform</span>
           </div>
           <p className="text-sm leading-relaxed mb-4">
-            Expert Geography education by Newtan Mandal. 
-            Comprehensive study materials and resources for school and college students.
+            A modern platform for managing and sharing study notes for school and college students.
           </p>
           <div className="flex space-x-4">
             <SocialIcon icon={<Twitter size={18} />} />
@@ -56,7 +55,7 @@ const Footer = () => {
           <div className="space-y-3 text-sm">
             <div className="flex items-start gap-3">
               <Mail className="text-amber-500 w-5 h-5 shrink-0" />
-              <span>Teacher: Newtan Mandal</span>
+              <span>Support Team</span>
             </div>
             <div className="flex items-start gap-3">
               <MapPin className="text-amber-500 w-5 h-5 shrink-0" />
@@ -69,7 +68,7 @@ const Footer = () => {
 
       {/* Bottom Bar */}
       <div className="border-t border-slate-800 py-4 text-center text-xs tracking-widest uppercase text-slate-500">
-        © {new Date().getFullYear()} Newtan's Unity - Geography by Newtan Mandal. All rights reserved. 
+        © {new Date().getFullYear()} Notes Manage Platform. All rights reserved. 
         <span className="mx-2">|</span> 
         Privacy Policy
         <span className="mx-2">|</span>

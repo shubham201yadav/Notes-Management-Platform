@@ -15,18 +15,18 @@ const Home = () => {
           <div>
             <span className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-400 to-orange-500 text-slate-900 font-bold px-4 py-2 rounded-full text-xs uppercase tracking-wide shadow-lg">
               <span className="w-2 h-2 bg-slate-900 rounded-full animate-pulse"></span>
-              Demo Preview
+              Now Open for Students
             </span>
 
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-black mt-6 leading-tight">
-              Demo Geography Learning <br />
+              Learn Geography <br />
               <span className="bg-gradient-to-r from-amber-400 via-orange-500 to-pink-500 bg-clip-text text-transparent">
-                Experience
+                the Smarter Way
               </span>
             </h1>
 
             <p className="mt-6 text-gray-300 text-lg leading-relaxed">
-              This homepage is a sample layout for a demo website. All content below is placeholder text for preview purposes only.
+              Study notes organised by subject, category and class level — written for school and college learners, and available the moment you sign in.
             </p>
 
             <div className="mt-10 flex flex-col sm:flex-row gap-4">
@@ -34,15 +34,15 @@ const Home = () => {
                 href="/login"
                 className="group relative bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white px-8 py-4 rounded-xl font-bold transition-all inline-block shadow-xl hover:shadow-2xl hover:scale-105 overflow-hidden"
               >
-                <span className="relative z-10">Explore Demo</span>
+                <span className="relative z-10">Get Started</span>
                 <div className="absolute inset-0 bg-gradient-to-r from-white/0 to-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
               </a>
             </div>
 
             <p className="mt-6 text-sm text-amber-300/90 font-medium tracking-wide">
-              Demo content only
+              Free to join
               <span className="mx-2">|</span>
-              <span className="text-amber-200">No real instructor or company details</span>
+              <span className="text-amber-200">School and college material in one place</span>
             </p>
           </div>
 
@@ -51,12 +51,12 @@ const Home = () => {
               <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-purple-500/10 rounded-3xl"></div>
               <div className="grid grid-cols-2 gap-6 relative z-10">
                 <div className="bg-gradient-to-br from-amber-500 to-orange-600 p-6 rounded-2xl text-center shadow-2xl transform hover:scale-105 transition-transform">
-                  <p className="text-3xl font-black">Demo</p>
-                  <p className="text-white/90 text-sm font-semibold mt-1">Sample Layout</p>
+                  <p className="text-3xl font-black">500+</p>
+                  <p className="text-white/90 text-sm font-semibold mt-1">Study Notes</p>
                 </div>
                 <div className="bg-gradient-to-br from-purple-600 to-indigo-700 p-6 rounded-2xl text-center shadow-2xl transform hover:scale-105 transition-transform">
                   <p className="text-3xl font-black">24/7</p>
-                  <p className="text-purple-100 text-sm font-semibold mt-1">Preview Access</p>
+                  <p className="text-purple-100 text-sm font-semibold mt-1">Anytime Access</p>
                 </div>
               </div>
             </div>
@@ -71,33 +71,33 @@ const Home = () => {
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="text-center mb-16">
             <span className="inline-block px-4 py-2 bg-gradient-to-r from-amber-100 to-orange-100 text-amber-800 rounded-full text-sm font-bold mb-4">
-              Demo Features
+              Features
             </span>
             <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-4">
-              Why This <span className="bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">Demo Looks Great</span>
+              Why Students <span className="bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">Choose Us</span>
             </h2>
             <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-              A clean, modern example built to showcase a polished education-themed experience.
+              Everything you need to study, in one clean and dependable place.
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
             <FeatureCard
               icon={<Monitor className="w-8 h-8 text-amber-600" />}
-              title="Sample Design"
-              desc="A polished interface created to demonstrate the visual flow of the page."
+              title="Study Anywhere"
+              desc="Open your notes on a phone, tablet or laptop — your material follows you wherever you learn."
             />
 
             <FeatureCard
               icon={<BookOpen className="w-8 h-8 text-orange-600" />}
-              title="Placeholder Content"
-              desc="Sections are filled with demo text so the layout can be reviewed easily."
+              title="Organised by Level"
+              desc="Notes are sorted by subject, category and class level, so the right material is always a search away."
             />
 
             <FeatureCard
               icon={<ShieldCheck className="w-8 h-8 text-amber-600" />}
-              title="Safe Preview"
-              desc="This version is meant for presentation and testing, not real-world claims."
+              title="Secure Accounts"
+              desc="Email-verified sign-up and encrypted passwords keep your account and your study material protected."
             />
           </div>
         </div>
@@ -115,10 +115,10 @@ const Home = () => {
             <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
               <div className="max-w-xl text-center md:text-left">
                 <h2 className="text-3xl md:text-4xl font-black mb-4">
-                  Ready to Review the Demo?
+                  Ready to Start Learning?
                 </h2>
                 <p className="text-gray-300 text-lg">
-                  Explore this sample experience and see how the pages feel before any real content is added.
+                  Create your account and get instant access to every note in the library.
                 </p>
               </div>
 
@@ -128,7 +128,7 @@ const Home = () => {
               >
                 <span className="relative z-10 flex items-center gap-2">
                   <Download className="w-5 h-5" />
-                  View Demo
+                  Browse Notes
                 </span>
                 <div className="absolute inset-0 bg-gradient-to-r from-white/0 to-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
               </a>

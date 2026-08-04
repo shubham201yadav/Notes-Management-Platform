@@ -12,36 +12,36 @@ import {
 const books = [
   {
     id: 1,
-    title: "Demo Book One",
-    subtitle: "Sample Edition",
+    title: "Physical Geography Essentials",
+    subtitle: "School Edition",
     price: 199,
     originalPrice: 250,
-    description: "A fictional book card used to preview the bookstore layout and styling.",
-    badge: "Demo",
+    description: "Landforms, climate and natural systems explained in plain language, with maps and diagrams for every chapter.",
+    badge: "Bestseller",
     rating: 4.8,
     students: "100+",
     buyLink: "#",
   },
   {
     id: 2,
-    title: "Demo Book Two",
-    subtitle: "Preview Collection",
+    title: "World Geography Atlas Guide",
+    subtitle: "College Edition",
     price: 149,
     originalPrice: 200,
-    description: "Another sample item created to show how book details appear in the demo interface.",
-    badge: "Sample",
+    description: "A region-by-region companion covering continents, borders and economies, built for quick revision before exams.",
+    badge: "Popular",
     rating: 4.6,
     students: "80+",
     buyLink: "#",
   },
   {
     id: 3,
-    title: "Demo Book Three",
-    subtitle: "Placeholder Volume",
+    title: "Human Geography Handbook",
+    subtitle: "Reference Volume",
     price: 129,
     originalPrice: 180,
-    description: "This placeholder card demonstrates a basic product section for a demo website.",
-    badge: "Preview",
+    description: "Population, settlement and resource topics gathered into one reference, with summary tables at the end of each unit.",
+    badge: "New",
     rating: 4.7,
     students: "60+",
     buyLink: "#",
@@ -56,20 +56,20 @@ const Books = () => {
           <div className="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 sm:p-10 md:p-12">
             <div className="max-w-3xl">
               <p className="inline-flex items-center gap-2 text-xs sm:text-sm bg-amber-500/15 border border-amber-400/40 text-amber-300 px-3 py-1.5 rounded-full">
-                <BookOpen size={14} /> Demo Books
+                <BookOpen size={14} /> Books
               </p>
               <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight">
-                Demo Geography Book Collection
+                Geography Book Collection
               </h1>
               <p className="mt-4 text-slate-300 text-sm sm:text-base leading-relaxed">
-                This bookstore section uses sample book data for preview purposes. No real products or purchase links are being represented here.
+                Reference titles chosen to sit alongside our study notes, covering the school and college geography syllabus from first principles to exam revision.
               </p>
             </div>
 
             <div className="mt-6 sm:mt-8 grid grid-cols-1 sm:grid-cols-3 gap-3">
-              <TrustChip icon={<BadgeCheck size={15} />} label="Sample Content" />
-              <TrustChip icon={<Truck size={15} />} label="Demo Delivery" />
-              <TrustChip icon={<ShieldCheck size={15} />} label="Preview Only" />
+              <TrustChip icon={<BadgeCheck size={15} />} label="Verified Content" />
+              <TrustChip icon={<Truck size={15} />} label="Syllabus Matched" />
+              <TrustChip icon={<ShieldCheck size={15} />} label="Trusted Titles" />
             </div>
           </div>
 
@@ -116,7 +116,7 @@ const Books = () => {
                       href={book.buyLink}
                       className="mt-6 inline-flex items-center justify-center gap-2 w-full rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-semibold px-4 py-3 min-h-[44px] transition"
                     >
-                      <ShoppingCart size={17} /> View Demo <ArrowRight size={16} />
+                      <ShoppingCart size={17} /> View Details <ArrowRight size={16} />
                     </a>
                   </div>
                 </article>

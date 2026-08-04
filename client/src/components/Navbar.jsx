@@ -69,7 +69,7 @@ const Navbar = () => {
           <span
             className={`text-xl font-black tracking-tight transition-colors duration-300 text-white drop-shadow-lg`}
           >
-            Newtan's Unity
+            Notes Manage Platform
           </span>
         </div>
 
